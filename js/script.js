@@ -46,10 +46,10 @@ const operatorButtons = calculator.querySelectorAll(".calc-buttons > .operator")
 
 digitButtons.forEach(button => {
   display.textContent = "";
-  button.addEventListener("click", displayClickedButton);
+  button.addEventListener("click", handleButtonClick);
 });
 
-function displayClickedButton(event) {
+function handleButtonClick(event) {
   const target = event.target
   const buttonValue = target.value;
 
