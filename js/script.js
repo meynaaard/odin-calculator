@@ -39,9 +39,10 @@ function operate(firstNum, secondNum, operator) {
   return runningTotal;
 }
 
-const display = document.querySelector('.display');
-const digitButtons = document.querySelectorAll(".calc-buttons > .digit");
-const operatorButtons = document.querySelectorAll(".calc-buttons > .operator");
+const calculator = document.querySelector(".calc");
+const display = calculator.querySelector(".display");
+const digitButtons = calculator.querySelectorAll(".calc-buttons > .digit");
+const operatorButtons = calculator.querySelectorAll(".calc-buttons > .operator");
 
 [...digitButtons, ...operatorButtons].forEach(button => {
   display.textContent = "";
