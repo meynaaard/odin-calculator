@@ -7,3 +7,55 @@
   margin: 0;
   padding: 0;
 }
+
+/* Type Selectors */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+button {
+  height: 48px;
+}
+
+/* Class Selectors */
+.calc {
+  width: 390px;
+}
+
+.calc-header {
+  display: flex;
+  align-items: center;
+  border: 1px solid black;
+  margin-bottom: 16px;
+  height: 48px;
+}
+
+.display {
+  margin-left: auto;
+  margin-right: 24px;
+}
+
+.calc-buttons {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.calc-buttons button {
+  flex-basis: 25%;
+}
+
+.calc-operators {
+  display: flex;
+  flex-direction: column;
+}
+
+.calc-footer {
+  display: flex;
+}
+
+.calc-footer button {
+  flex-basis: 50%;
+}
