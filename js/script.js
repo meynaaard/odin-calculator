@@ -14,37 +14,36 @@ function divide(firstNum, secondNum) {
   return firstNum / secondNum;
 }
 
-let firstNum;
-let secondNum;
-let operator;
+let calculation = 0;
+let firstNum = 0;
+let secondNum = 0;
+let operator = "";
 
 function operate(firstNum, secondNum, operator) {
-  let runningTotal;
-
   switch (operator) {
-    case "+":
-      runningTotal = add(firstNum, secondNum);
+    case "add":
+      calculation = add(firstNum, secondNum);
       break;
-    case "-":
-      runningTotal = subtract(firstNum, secondNum);
+    case "subtract":
+      calculation = subtract(firstNum, secondNum);
       break;
-    case "*":
-      runningTotal = multiply(firstNum, secondNum);
+    case "multiply":
+      calculation = multiply(firstNum, secondNum);
       break;
-    case "/":
-      runningTotal = divide(firstNum, secondNum);
+    case "divide":
+      calculation = divide(firstNum, secondNum);
       break;
   }
 
-  return runningTotal;
+  return calculation;
 }
 
 const calculator = document.querySelector(".calc");
 const display = calculator.querySelector(".display");
-const digitButtons = calculator.querySelectorAll(".calc-buttons > .digit");
-const operatorButtons = calculator.querySelectorAll(".calc-buttons > .operator");
+const digitButtons = calculator.querySelectorAll(".digit");
+const operatorButtons = calculator.querySelectorAll(".operator");
 
-digitButtons.forEach(button => {
+[...digitButtons, ...operatorButtons].forEach(button => {
   display.textContent = "";
   button.addEventListener("click", handleButtonClick);
 });
@@ -53,5 +52,33 @@ function handleButtonClick(event) {
   const target = event.target
   const buttonValue = target.value;
 
-  display.textContent += buttonValue;
+  if (target.className === "digit") {
+    display.textContent += buttonValue;
+  }
+
+  if (target.className === "operator") {
+    if (buttonValue !== "calculate") {
+      firstNum = parseInt(display.textContent, 10);
+      display.textContent = "";
+
+      switch (buttonValue) {
+        case "add":
+          operator = "add";
+          break;
+        case "subtract":
+          operator = "subtract";
+          break;
+        case "multiply":
+          operator = "multiply";
+          break;
+        case "divide":
+          operator = "divide";
+          break;
+      }
+    } else if (buttonValue === "calculate") {
+      secondNum = parseInt(display.textContent, 10);
+      display.textContent = "";
+      display.textContent = operate(firstNum, secondNum, operator);
+    }
+  }
 }
