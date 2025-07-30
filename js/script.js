@@ -95,7 +95,7 @@ function handleOperatorClick(event) {
       operator = "divide";
       break;
     case "calculate":
-      display.textContent = operate(prevOperand, nextOperand, operator);
+      display.textContent = operate(prevOperand, operator, nextOperand);
       operatorButtonClicked = false;
       break;
   }
