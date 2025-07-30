@@ -1,37 +1,37 @@
-function add(firstNum, secondNum) {
-  return firstNum + secondNum;
+function add(prevOperand, nextOperand) {
+  return prevOperand + nextOperand;
 }
 
-function subtract(firstNum, secondNum) {
-  return firstNum - secondNum;
+function subtract(prevOperand, nextOperand) {
+  return prevOperand - nextOperand;
 }
 
-function multiply(firstNum, secondNum) {
-  return firstNum * secondNum
+function multiply(prevOperand, nextOperand) {
+  return prevOperand * nextOperand
 }
 
-function divide(firstNum, secondNum) {
-  return firstNum / secondNum;
+function divide(prevOperand, nextOperand) {
+  return prevOperand / nextOperand;
 }
 
 let calculation = 0;
-let firstNum = calculation;
-let secondNum = 0;
+let prevOperand = calculation;
+let nextOperand = 0;
 let operator = "";
 
-function operate(firstNum, secondNum, operator) {
+function operate(prevOperand, operator, nextOperand) {
   switch (operator) {
     case "add":
-      calculation = add(firstNum, secondNum);
+      calculation = add(prevOperand, nextOperand);
       break;
     case "subtract":
-      calculation = subtract(firstNum, secondNum);
+      calculation = subtract(prevOperand, nextOperand);
       break;
     case "multiply":
-      calculation = multiply(firstNum, secondNum);
+      calculation = multiply(prevOperand, nextOperand);
       break;
     case "divide":
-      calculation = divide(firstNum, secondNum);
+      calculation = divide(prevOperand, nextOperand);
       break;
   }
 
@@ -43,7 +43,7 @@ const display = calculator.querySelector(".display");
 const digitButtons = calculator.querySelectorAll(".digit");
 const operatorButtons = calculator.querySelectorAll(".operator");
 let operatorButtonClicked = false;
-let expectingSecondNum = false;
+let expectingNextOperand = false;
 
 digitButtons.forEach(button => {
   button.addEventListener("click", handleDigitClick);
@@ -58,9 +58,9 @@ function handleDigitClick(event) {
   const buttonValue = target.value;
 
   if (target.className === "digit") {
-    if (expectingSecondNum) {
+    if (expectingNextOperand) {
       display.textContent = buttonValue;
-      expectingSecondNum = false;
+      expectingNextOperand = false;
     } else {
       display.textContent += buttonValue;
     }
@@ -68,16 +68,16 @@ function handleDigitClick(event) {
 }
 
 function handleOperatorClick(event) {
-  expectingSecondNum = true;
-  
+  expectingNextOperand = true;
+
   const target = event.target
   const buttonValue = target.value;
 
   if (operatorButtonClicked) {
-    secondNum = parseInt(display.textContent, 10);
+    nextOperand = parseInt(display.textContent, 10);
     operatorButtonClicked = false;
   } else {
-    firstNum = parseInt(display.textContent, 10);
+    prevOperand = parseInt(display.textContent, 10);
     operatorButtonClicked = true;
   }
 
@@ -95,7 +95,7 @@ function handleOperatorClick(event) {
       operator = "divide";
       break;
     case "calculate":
-      display.textContent = operate(firstNum, secondNum, operator);
+      display.textContent = operate(prevOperand, nextOperand, operator);
       operatorButtonClicked = false;
       break;
   }
