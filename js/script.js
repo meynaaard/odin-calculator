@@ -15,7 +15,7 @@ function divide(firstNum, secondNum) {
 }
 
 let calculation = 0;
-let firstNum = 0;
+let firstNum = calculation;
 let secondNum = 0;
 let operator = "";
 
@@ -42,43 +42,61 @@ const calculator = document.querySelector(".calc");
 const display = calculator.querySelector(".display");
 const digitButtons = calculator.querySelectorAll(".digit");
 const operatorButtons = calculator.querySelectorAll(".operator");
+let operatorButtonClicked = false;
+let expectingSecondNum = false;
 
-[...digitButtons, ...operatorButtons].forEach(button => {
-  display.textContent = "";
-  button.addEventListener("click", handleButtonClick);
+digitButtons.forEach(button => {
+  button.addEventListener("click", handleDigitClick);
 });
 
-function handleButtonClick(event) {
+operatorButtons.forEach(button => {
+  button.addEventListener("click", handleOperatorClick);
+})
+
+function handleDigitClick(event) {
   const target = event.target
   const buttonValue = target.value;
 
   if (target.className === "digit") {
-    display.textContent += buttonValue;
+    if (expectingSecondNum) {
+      display.textContent = buttonValue;
+      expectingSecondNum = false;
+    } else {
+      display.textContent += buttonValue;
+    }
+  }
+}
+
+function handleOperatorClick(event) {
+  expectingSecondNum = true;
+  
+  const target = event.target
+  const buttonValue = target.value;
+
+  if (operatorButtonClicked) {
+    secondNum = parseInt(display.textContent, 10);
+    operatorButtonClicked = false;
+  } else {
+    firstNum = parseInt(display.textContent, 10);
+    operatorButtonClicked = true;
   }
 
-  if (target.className === "operator") {
-    if (buttonValue !== "calculate") {
-      firstNum = parseInt(display.textContent, 10);
-      display.textContent = "";
-
-      switch (buttonValue) {
-        case "add":
-          operator = "add";
-          break;
-        case "subtract":
-          operator = "subtract";
-          break;
-        case "multiply":
-          operator = "multiply";
-          break;
-        case "divide":
-          operator = "divide";
-          break;
-      }
-    } else if (buttonValue === "calculate") {
-      secondNum = parseInt(display.textContent, 10);
-      display.textContent = "";
+  switch (buttonValue) {
+    case "add":
+      operator = "add";
+      break;
+    case "subtract":
+      operator = "subtract";
+      break;
+    case "multiply":
+      operator = "multiply";
+      break;
+    case "divide":
+      operator = "divide";
+      break;
+    case "calculate":
       display.textContent = operate(firstNum, secondNum, operator);
-    }
+      operatorButtonClicked = false;
+      break;
   }
 }
