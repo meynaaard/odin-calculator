@@ -54,13 +54,14 @@ operatorButtons.forEach(button => {
 })
 
 function handleDigitClick(event) {
-  const target = event.target
-  const buttonValue = target.value;
+  const buttonValue = event.target.value;
 
-  if (target.className === "digit") {
-    if (expectingNextOperand) {
+  if (operatorButtonClicked) {
+    display.textContent = buttonValue;
+    expectingNextOperand = false;
+  } else {
+    if (display.textContent === "0") {
       display.textContent = buttonValue;
-      expectingNextOperand = false;
     } else {
       display.textContent += buttonValue;
     }
@@ -69,9 +70,7 @@ function handleDigitClick(event) {
 
 function handleOperatorClick(event) {
   expectingNextOperand = true;
-
-  const target = event.target
-  const buttonValue = target.value;
+  const buttonValue = event.target.value;
 
   if (operatorButtonClicked) {
     nextOperand = parseInt(display.textContent, 10);
