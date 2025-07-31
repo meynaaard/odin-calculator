@@ -56,9 +56,10 @@ calculator.addEventListener("click", (event) => {
   } else if (value === "calculate") {
     handleEqualsClick();
   } else if (value === "clear") {
-    clearCalculator();
+    display.textContent = "0";
+    reset();
   } else if (value === "backspace") {
-    backspace();
+    display.textContent = display.textContent.slice(0, -1);
   }
 });
 
@@ -109,14 +110,10 @@ function handleEqualsClick() {
   }
 }
 
-function clearCalculator() {
+function reset() {
   prevOperand = null;
   nextOperand = null;
   operator = null;
   operatorButtonClicked = false;
-  display.textContent = "0";
-}
-
-function backspace() {
-  display.textContent = display.textContent.slice(0, -1);
+  return;
 }
