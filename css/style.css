@@ -10,7 +10,6 @@
 
 /* Type Selectors */
 body {
-  background-color: #333;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,10 +22,13 @@ button {
 
 /* Class Selectors */
 .calc {
+  background-color: slategrey;  
+  padding: 32px;
   width: 390px;
 }
 
 .calc-header {
+  background-color: darkseagreen;
   display: flex;
   align-items: center;
   border: 1px solid black;

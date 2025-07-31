@@ -14,12 +14,9 @@ function divide(prevOperand, nextOperand) {
   return prevOperand / nextOperand;
 }
 
-let calculation = 0;
-let prevOperand = calculation;
-let nextOperand = 0;
-let operator = "";
-
 function operate(prevOperand, operator, nextOperand) {
+  let calculation = 0;
+
   switch (operator) {
     case "add":
       calculation = add(prevOperand, nextOperand);
@@ -40,62 +37,86 @@ function operate(prevOperand, operator, nextOperand) {
 
 const calculator = document.querySelector(".calc");
 const display = calculator.querySelector(".display");
-const digitButtons = calculator.querySelectorAll(".digit");
-const operatorButtons = calculator.querySelectorAll(".operator");
-let operatorButtonClicked = false;
-let expectingNextOperand = false;
 
-digitButtons.forEach(button => {
-  button.addEventListener("click", handleDigitClick);
+let prevOperand = null;
+let nextOperand = null;
+let operator = null;
+let operatorButtonClicked = false;
+
+calculator.addEventListener("click", (event) => {
+  const target = event.target;
+  const value = target.value;
+
+  if (!target.matches("button")) return;
+
+  if (target.classList.contains("digit")) {
+    handleDigitClick(value);
+  } else if (target.classList.contains("operator")) {
+    handleOperatorClick(value);
+  } else if (value === "calculate") {
+    handleEqualsClick();
+  } else if (value === "clear") {
+    clearCalculator();
+  } else if (value === "backspace") {
+    backspace();
+  }
 });
 
-operatorButtons.forEach(button => {
-  button.addEventListener("click", handleOperatorClick);
-})
-
-function handleDigitClick(event) {
-  const buttonValue = event.target.value;
-
+function handleDigitClick(value) {
   if (operatorButtonClicked) {
-    display.textContent = buttonValue;
-    expectingNextOperand = false;
+    display.textContent = value;
+    operatorButtonClicked = false;
   } else {
     if (display.textContent === "0") {
-      display.textContent = buttonValue;
+      display.textContent = value;
     } else {
-      display.textContent += buttonValue;
+      display.textContent += value;
     }
   }
 }
 
-function handleOperatorClick(event) {
-  expectingNextOperand = true;
-  const buttonValue = event.target.value;
+function handleOperatorClick(value) {
+  const currentValue = parseInt(display.textContent, 10);
 
-  if (operatorButtonClicked) {
-    nextOperand = parseInt(display.textContent, 10);
-    operatorButtonClicked = false;
+  if (operator && !operatorButtonClicked) {
+    nextOperand = currentValue;
+    const calculation = operate(prevOperand, operator, nextOperand);
+    display.textContent = calculation;
+
+    prevOperand = calculation;
+    nextOperand = null;
   } else {
-    prevOperand = parseInt(display.textContent, 10);
-    operatorButtonClicked = true;
+    prevOperand = currentValue;
   }
 
-  switch (buttonValue) {
-    case "add":
-      operator = "add";
-      break;
-    case "subtract":
-      operator = "subtract";
-      break;
-    case "multiply":
-      operator = "multiply";
-      break;
-    case "divide":
-      operator = "divide";
-      break;
-    case "calculate":
-      display.textContent = operate(prevOperand, operator, nextOperand);
-      operatorButtonClicked = false;
-      break;
+  operator = value;
+  operatorButtonClicked = true;
+}
+
+function handleEqualsClick() {
+  const currentValue = parseInt(display.textContent, 10);
+
+  if (operator && prevOperand !== null) {
+    nextOperand = currentValue;
+    const calculation = operate(prevOperand, operator, nextOperand);
+
+    display.textContent = calculation;
+    prevOperand = calculation;
+
+    operator = null;
+    nextOperand = null;
+    operatorButtonClicked = false;
   }
+}
+
+function clearCalculator() {
+  prevOperand = null;
+  nextOperand = null;
+  operator = null;
+  operatorButtonClicked = false;
+  display.textContent = "0";
+}
+
+function backspace() {
+  display.textContent = display.textContent.slice(0, -1);
 }
