@@ -22,7 +22,8 @@ button {
 
 /* Class Selectors */
 .calc {
-  background-color: slategrey;  
+  background-color: slategrey;
+  border: 1px solid black;
   padding: 32px;
   width: 390px;
 }
